@@ -1,10 +1,10 @@
 # Updating NPW + Sat + PV Data on GCS
 
-Training and inference of ML models is done both locally and in the cloud. This repo contains some of the scripts requried to process data into the correct format as well as upload it to Google Cloud Storage, where it can then be transfered onto a disk to be used by a VM.
+Training and inference of ML models is done both locally and in the cloud. This repo contains some of the scripts required to process data into the correct format as well as upload it to Google Cloud Storage, where it can then be transferred onto a disk to be used by a VM.
 
 ## Numerical Weather Prediction (NWP) Data
 
-Each NWP is slightly different based on the variables, covereage and other factors as such they are mulitple processing scripts and there may even be multiple processing scripts for the same NWP. This is due to OCF potentially repulling data to increase the forecast horizon and include new variables of the same NWP. As such at the top of each script, its primary use case will be stated.
+Each NWP is slightly different based on the variables, coverage and other factors as such they are multiple processing scripts and there may even be multiple processing scripts for the same NWP. This is due to OCF potentially repulling data to increase the forecast horizon and include new variables of the same NWP. As such at the top of each script, its primary use case will be stated.
 
 Heres an outline of the process for NWPs:
 
@@ -18,7 +18,7 @@ Heres an outline of the process for NWPs:
 ### Potential Issues and Notes for NWP
 
 - Issues can arrise if you are still downloading data to the location in which you are using to merge the individual init times from. More on this in 01 in the Issues Log. Solution was to manually remove the files which showed missing data.
-- Some of these yearly NWP files can end up being very large (~1Tb). Hence take careful consideration and conduct testing with threads, workers and memory limitations with the Dask client. Also note, additional tasks running on the machine can make a difference (espcially if they are also using lots of RAM).
+- Some of these yearly NWP files can end up being very large (~1Tb). Hence take careful consideration and conduct testing with threads, workers and memory limitations with the Dask client. Also note, additional tasks running on the machine can make a difference (especially if they are also using lots of RAM).
 - Another way to track the progress of your the processes is to watch the size of the zarr file grow. You can do this using `du -h` in the appropriate location.
 
 ## Satellite Data
@@ -37,9 +37,9 @@ To upload files to Google Cloud Platform (GCP), you can use the `gsutil` functio
 gsutil cp -r my/folder/path/ gs://your-bucket-name/
 ```
 
-(RECOMENDED) For faster uploading, you can use one of the `upload_to_gcs.py` scripts which uses multiprocessing to speed things up.
+(RECOMMENDED) For faster uploading, you can use one of the `upload_to_gcs.py` scripts which uses multiprocessing to speed things up.
 
-Once the data is in the GCS bucket, it can be moved to a disk by first SSH'ing onto your VM and attaching the relevant disk (if not already attached) with write permissions. Mount the disk you want to add the new data to with read and write privledges, heres an example:
+Once the data is in the GCS bucket, it can be moved to a disk by first SSH'ing onto your VM and attaching the relevant disk (if not already attached) with write permissions. Mount the disk you want to add the new data to with read and write privileges, heres an example:
 `sudo mount -o discard,defaults,rw /dev/abc /mnt/disks/abc_data`
 
 If updating an existing disk please note that anyone who has the disk mounted may be required to unmount it in order to change the read/write access.
@@ -52,4 +52,4 @@ gsutil cp -r gs://YOUR_BUCKET_NAME/YOUR_FILE_PATH* /mnt/disks/DISK_NAME/folder
 
 The `*` is used to copy all files in that directory.
 
-(RECOMENDED) For much faster data transfer, you can use the "gcs_to_disk.py` script which again uses multiprocessing to speed things up.
+(RECOMMENDED) For much faster data transfer, you can use the "gcs_to_disk.py` script which again uses multiprocessing to speed things up.
