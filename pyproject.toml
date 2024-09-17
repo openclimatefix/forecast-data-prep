@@ -1,0 +1,6 @@
+[tool.ruff]
+select = ["E", "F", "D", "I"]
+ignore = ['D10', 'D203', 'D205', 'D212', 'D213', 'D400', 'D413', 'D415', 'D417']
+
+[tool.black]
+line-length = 120
