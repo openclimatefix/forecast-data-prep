@@ -55,3 +55,20 @@ gsutil cp -r gs://YOUR_BUCKET_NAME/YOUR_FILE_PATH* /mnt/disks/DISK_NAME/folder
 The `*` is used to copy all files in that directory.
 
 (RECOMMENDED) For much faster data transfer, you can use the `upload_to_gcs_ecmwf.py` or `upload_to_gcs_mo.py` scripts which again uses multiprocessing to speed things up.
+
+
+## Contributing and community
+
+[![ease of contribution: medium](https://img.shields.io/badge/ease%20of%20contribution:%20medium-f4900c)](https://
+[![issues badge](https://img.shields.io/github/issues/openclimatefix/ocf-template?color=FFAC5F)](https://github.com/openclimatefix/ocf-template/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+
+- PR's are welcome! See the [Organisation Profile](https://github.com/openclimatefix) for details on contributing
+- Find out about our other projects in the [OCF Meta Repo](https://github.com/openclimatefix/ocf-meta-repo)
+- Check out the [OCF blog](https://openclimatefix.org/blog) for updates
+- Follow OCF on [LinkedIn](https://uk.linkedin.com/company/open-climate-fix)
+
+---
+
+*Part of the [Open Climate Fix](https://github.com/orgs/openclimatefix/people) community.*
+
+[![OCF Logo](https://cdn.prod.website-files.com/62d92550f6774db58d441cca/6324a2038936ecda71599a8b_OCF_Logo_black_trans.png)](https://openclimatefix.org)
