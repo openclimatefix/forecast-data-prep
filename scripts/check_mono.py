@@ -6,8 +6,7 @@ Parameters:
 - dimensions (list): A list of dimensions to check for monotonicity.
 
 Returns:
-- list: A list of dimensions that are not monotonic, or ["error"] if there was an error opening or checking the file.
-
+- list: A list of dimensions that are not monotonic, or error if there was an error opening or checking the file.
 """
 
 import glob
