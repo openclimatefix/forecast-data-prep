@@ -1,4 +1,4 @@
-# Updating NPW + Sat + PV Data on GCS
+# Updating NWP + Sat + PV Data on GCS
 
 Training and inference of ML models is done both locally and in the cloud. This repo contains some of the scripts required to process data into the correct format as well as upload it to Google Cloud Storage, where it can then be transferred onto a disk to be used by a VM.
 
