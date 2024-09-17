@@ -23,3 +23,8 @@ repos:
     rev: 23.1.0
     hooks:
       - id: black
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.1.0
+    hooks:
+      - id: codespell
