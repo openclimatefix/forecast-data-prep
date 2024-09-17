@@ -18,7 +18,7 @@ repos:
         verbose: true
 
   - repo: "https://github.com/astral-sh/ruff-pre-commit"
-    rev: v0.6.4
+    rev: v0.6.5
     hooks:
       # Run the linter and fix problems.
       # * Must be run before ruff-format!
