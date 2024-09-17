@@ -27,7 +27,7 @@ Use script called `sat_proc.py` which pulls satellite data from the Google Publi
 
 ## PV Data
 
-Use script called `get_pvlive_data.py` can be used to get the latest data from PV Live which is used for OCFs national forecast.
+Use script called `gsp_pv_proc.py` can be used to get the latest data from PV Live which is used for OCFs national forecast.
 
 ## Moving files to GCS and onto a disk
 
@@ -52,4 +52,4 @@ gsutil cp -r gs://YOUR_BUCKET_NAME/YOUR_FILE_PATH* /mnt/disks/DISK_NAME/folder
 
 The `*` is used to copy all files in that directory.
 
-(RECOMMENDED) For much faster data transfer, you can use the "gcs_to_disk.py` script which again uses multiprocessing to speed things up.
+(RECOMMENDED) For much faster data transfer, you can use the `upload_to_gcs_ecmwf.py` or `upload_to_gcs_mo.py` scripts which again uses multiprocessing to speed things up.
