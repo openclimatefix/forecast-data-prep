@@ -1,15 +1,19 @@
 """
 Check the monotonicity of specified dimensions in the dataset.
 
-Parameters:
+Parameters
+----------
 - file_path (str): The path to the dataset file.
 - dimensions (list): A list of dimensions to check for monotonicity.
 
-Returns:
-- list: A list of dimensions that are not monotonic, or error if there was an error opening or checking the file.
+Returns
+-------
+- list: A list of dimensions that are not monotonic, or error if there was an error
+        opening or checking the file.
 """
 
 import glob
+
 import xarray as xr
 from tqdm import tqdm
 

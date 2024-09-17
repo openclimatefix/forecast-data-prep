@@ -1,14 +1,17 @@
 """
 Check if all required variables are present in the 'variable' coordinate of the dataset.
 
-Parameters:
+Parameters
+----------
 - file_path (str): The path to the zarr dataset file.
 
-Returns:
+Returns
+-------
 - missing_vars (list): A list of variables that are missing from the 'variable' coordinate.
 """
 
 import glob
+
 import xarray as xr
 from tqdm import tqdm
 
@@ -44,9 +47,7 @@ def check_variables(file_path):
         # Ensure 'variable' is a coordinate in the dataset
         if "variable" in ds.coords:
             available_vars = set(ds.coords["variable"].values)
-            missing_vars = [
-                var for var in required_variables if var not in available_vars
-            ]
+            missing_vars = [var for var in required_variables if var not in available_vars]
             return missing_vars
         else:
             return ["variable coordinate not found"]

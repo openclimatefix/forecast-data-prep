@@ -1,5 +1,5 @@
 """
-This script is designed to process zarr NWPs from the Met Office that require combination along the "Init_time" dimension.
+Process zarr NWPs from the Met Office that require combination along the "Init_time" dimension.
 
 Functions:
     - main: Use the processed unzipped NWP zarrs and combine along init time.
@@ -8,19 +8,20 @@ Output:
     - Combined zarr files for each year.
 """
 
-import os
-from dask.diagnostics import ProgressBar
-import xarray as xr
-import glob
-from dask.distributed import Client, LocalCluster
-import numpy as np
 import datetime
+import glob
 import logging
+import os
+
+import numpy as np
+import xarray as xr
+from dask.diagnostics import ProgressBar
+from dask.distributed import Client, LocalCluster
 
 logging.basicConfig(level=logging.INFO)
 
 
-output_file = "/mnt/storage_b/data/ocf/solar_pv_nowcasting/nowcasting_dataset_pipeline/NWP/UK_Met_Office/UKV_ext/t5/UKV_{year}.zarr"
+output_file = "/mnt/storage_b/data/ocf/solar_pv_nowcasting/nowcasting_dataset_pipeline/NWP/UK_Met_Office/UKV_ext/t5/UKV_{year}.zarr"  # noqa: E501
 tmp_dir = "/mnt/storage_b/data/ocf/solar_pv_nowcasting/nowcasting_dataset_pipeline/NWP/UK_Met_Office/UKV_ext/tmp_2"
 
 assert not os.path.exists(output_file)
@@ -52,9 +53,7 @@ if __name__ == "__main__":
 
         current_time = datetime.datetime.now()
         print(f"Processing year: {year} - Current time: {current_time}")
-        ds_all = xr.open_mfdataset(
-            f"{tmp_dir}/{year}*.zarr", engine="zarr", data_vars="all"
-        )
+        ds_all = xr.open_mfdataset(f"{tmp_dir}/{year}*.zarr", engine="zarr", data_vars="all")
         ds_all = ds_all.sortby("init_time")
         ds_all["variable"] = ds_all.variable.astype(str)
 

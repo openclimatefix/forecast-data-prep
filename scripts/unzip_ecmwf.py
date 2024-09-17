@@ -1,13 +1,15 @@
 """
-This script is for processing the extended horizon ECMWF dataset, which goes out to 83 hours and was gathered by OCF during April-July 2024.
-The script processes the data in specific way for ECMWF data, then chunks the data and saves the init_time processed files in a directory.
+Process the extended horizon ECMWF dataset, which goes out to 83 hours and was gathered by OCF during April-July 2024.
+The script processes the data in specific way for ECMWF data, then chunks the data and saves the init_time processed
+files in a directory.
 """
 
+import glob
 import os
-from dask.diagnostics import ProgressBar
+
 import dask
 import xarray as xr
-import glob
+from dask.diagnostics import ProgressBar
 from dask.distributed import Client
 
 input_files = sorted(glob.glob("/mnt/storage_b/nwp/ecmwf/uk/*.zarr.zip"))

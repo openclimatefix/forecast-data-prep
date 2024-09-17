@@ -9,13 +9,19 @@ repos:
       - id: end-of-file-fixer
       - id: detect-private-key
 
+  - repo: https://github.com/psf/black
+    rev: 23.9.1  # You can specify the latest version here or leave it as is
+    hooks:
+      - id: black
+        language_version: python3.10  # Replace with your Python version
+
   - repo: "https://github.com/astral-sh/ruff-pre-commit"
     rev: v0.6.4
     hooks:
       # Run the linter and fix problems.
       # * Must be run before ruff-format!
       - id: ruff
-        args: [ --fix ]
+        args: [--fix]
       # Run the formatter.
       - id: ruff-format
   

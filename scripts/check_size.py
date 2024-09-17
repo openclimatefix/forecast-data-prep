@@ -1,9 +1,8 @@
-"""
-This script checks the size of Zarr directories and saves the file size information to a CSV file.
-"""
+"""checks the size of Zarr directories and saves the file size information to a CSV file."""
 
-import os
 import glob
+import os
+
 import pandas as pd
 from dask.distributed import Client, LocalCluster, progress
 
@@ -43,7 +42,7 @@ def main():
     df = pd.DataFrame(results, columns=["file_path", "size_MB"])
 
     # Save the file size information to a CSV file
-    output_csv_path = "/mnt/storage_b/data/ocf/solar_pv_nowcasting/nowcasting_dataset_pipeline/NWP/UK_Met_Office/UKV_ext/zarr_file_sizes.csv"
+    output_csv_path = "/mnt/storage_b/data/ocf/solar_pv_nowcasting/nowcasting_dataset_pipeline/NWP/UK_Met_Office/UKV_ext/zarr_file_sizes.csv"  # noqa: E501
     df.to_csv(output_csv_path, index=False)
 
     print(f"File size information saved to {output_csv_path}")

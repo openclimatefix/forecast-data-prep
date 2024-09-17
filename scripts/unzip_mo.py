@@ -1,16 +1,16 @@
 """
-This script is used to process zipped zarr files from a specified directory.
+Process zipped zarr files from a specified directory.
 The script processes the data in specific way for Met Office data, then chunks the data
 and saves the init_time processed files in a directory.
 """
 
+import glob
 import os
-from dask.diagnostics import ProgressBar
+
 import dask
 import xarray as xr
-import glob
+from dask.diagnostics import ProgressBar
 from dask.distributed import Client
-
 
 input_files = sorted(glob.glob("/mnt/storage_b/nwp/ceda/uk/*.zarr.zip"))
 tmp_dir = "/mnt/storage_b/data/ocf/solar_pv_nowcasting/nowcasting_dataset_pipeline/NWP/UK_Met_Office/UKV_ext/tmp_2"
