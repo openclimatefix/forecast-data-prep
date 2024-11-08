@@ -1,64 +1,71 @@
 # Updating NWP + Sat + PV Data on GCS
 
-Training and inference of ML models is done both locally and in the cloud. This repo contains some of the scripts required to process data into the correct format as well as upload it to Google Cloud Storage, where it can then be transferred onto a disk to be used by a VM.
+![ease of contribution: medium](https://img.shields.io/badge/ease%20of%20contribution:%20medium-f4900c)
+[![issues badge](https://img.shields.io/github/issues/openclimatefix/ocf-template?color=FFAC5F)](https://github.com/openclimatefix/ocf-template/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+
+Scripts to process and upload ML training data to Google Cloud Storage for use on VMs.
 
 ## Numerical Weather Prediction (NWP) Data
 
-Each NWP is slightly different based on the variables, coverage and other factors as such they are multiple processing scripts and there may even be multiple processing scripts for the same NWP. This is due to OCF potentially repulling data to increase the forecast horizon and include new variables of the same NWP. As such at the top of each script, its primary use case will be stated.
+Multiple processing scripts exist for NWPs due to variations in variables, coverage, and forecast horizons. Each script specifies its primary use case at the top.
 
-Heres an outline of the process for NWPs:
+NWP Processing Steps:
 
-1. Download the data so that there is one file for each forecast init time.
-2. Convert the data into an unzipped Zarr file format and combine all the NWP data variables into a dimension labelled variable.
-3. Combine the individual forecast init times together into yearly Zarrs.
-4. This is where you also sort, assign types and specify chunking.
-5. Inspect the data by making plots and run checks/tests similar to that which might be performed by the data loader for the specific NWP (PVNet uses ocf_datapipes). Use the notebooks in this repo to help.
-6. Done! The yearly Zarrs should now be ready to upload to google storage.
+1. Download individual forecast init time files
+2. Convert to unzipped Zarr format with combined variables
+3. Merge into yearly Zarrs with proper sorting, typing and chunking
+4. Validate data through visualization and testing
+5. Upload yearly Zarrs to Google Storage
 
-### Potential Issues and Notes for NWP
+#### Issues and Important Considerations for NWP Processing
 
-- Issues can arrise if you are still downloading data to the location in which you are using to merge the individual init times from. More on this in 01 in the Issues Log. Solution was to manually remove the files which showed missing data.
-- Some of these yearly NWP files can end up being very large (~1Tb). Hence take careful consideration and conduct testing with threads, workers and memory limitations with the Dask client. Also note, additional tasks running on the machine can make a difference (especially if they are also using lots of RAM).
-- Another way to track the progress of your the processes is to watch the size of the zarr file grow. You can do this using `du -h` in the appropriate location.
+- Issues can arise if you are still downloading data to the location where you are merging individual init times from. The solution is to manually remove files showing missing data.
+- Some yearly NWP files can be very large (~1TB). Take careful consideration and conduct testing with threads, workers and memory limitations in the Dask client. Note that additional tasks running on the machine can impact performance, especially if they are also using lots of RAM.
+- Another way to track process progress is to watch the zarr file size grow using `du -h` in the appropriate location.
 
 ## Satellite Data
 
-Use script called `sat_proc.py` which pulls satellite data from the Google Public Storage. Always a good idea to visualise the data downloaded and to check for NaNs, which do exist in the dataset.
+Satellite data processing is handled by `sat_proc.py`, which downloads satellite imagery data from Google Public Storage and processes it for ML training.
 
 ## PV Data
 
-Use script called `gsp_pv_proc.py` can be used to get the latest data from PV Live which is used for OCFs national forecast.
+The `gsp_pv_proc.py` script downloads the National PV generation data from Sheffield Solar PV Live, which is used as the target for OCF's national solar power forecast.
 
 ## Moving files to GCS and onto a disk
 
-To upload files to Google Cloud Platform (GCP), you can use the `gsutil` function to go to a Google Cloud Storage (GCS) bucket. The can be done via:
+To upload files locally to Google Cloud Platform (GCP), you can use the `gsutil` library. The can be done via:
 
 ```bash
-gsutil cp -r my/folder/path/ gs://your-bucket-name/
+gsutil -m cp -r my/folder/path/ gs://your-bucket-name/
 ```
 
-(RECOMMENDED) For faster uploading, you can use one of the `upload_to_gcs.py` scripts which uses multiprocessing to speed things up.
+For potentially faster uploads, you can try the `upload_to_gcs.py` script which uses multiprocessing to speed things up. However sometimes the limitation is the internet or write speed of the disk so it may not be faster.
 
-Once the data is in the GCS bucket, it can be moved to a disk by first SSH'ing onto your VM and attaching the relevant disk (if not already attached) with write permissions. Mount the disk you want to add the new data to with read and write privileges, heres an example:
-`sudo mount -o discard,defaults,rw /dev/abc /mnt/disks/abc_data`
+Once your data is in the GCS bucket, you can transfer it to a disk on your VM. First, SSH into your VM and make sure the target disk is attached with write permissions. Then mount the disk with read and write privileges using the following command:
+`sudo mount -o discard,defaults,rw /dev/ABC /mnt/disks/DISK_NAME`
 
-If updating an existing disk please note that anyone who has the disk mounted may be required to unmount it in order to change the read/write access.
+(You will need to know the disk name, which you can find with `lsblk`, and replace `ABC` with the actual disk name).
 
-To move the data from the GCS bucket to the disk, this can be done via:
+If updating an existing disk please note that anyone who has the disk mounted will be required to unmount it in order to change the disks read/write access.
+
+To copy data from your GCS bucket to the mounted disk, use the following command:
 
 ```bash
-gsutil cp -r gs://YOUR_BUCKET_NAME/YOUR_FILE_PATH* /mnt/disks/DISK_NAME/folder
+gsutil -m cp -r gs://YOUR_BUCKET_NAME/YOUR_FILE_PATH* /mnt/disks/DISK_NAME/folder
 ```
 
 The `*` is used to copy all files in that directory.
 
-(RECOMMENDED) For much faster data transfer, you can use the `upload_to_gcs_ecmwf.py` or `upload_to_gcs_mo.py` scripts which again uses multiprocessing to speed things up.
+### Issues during upload
 
+If issues arise when uploading, use `rsync` instead to copy the files across if some have already been downloaded. For example:
+```bash
+gsutil -m rsync -r gs://solar-pv-nowcasting-data/NWP/UK_Met_Office/UKV_extended/UKV_2023.zarr/ /mnt/disks/gcp_data/nwp/ukv/ukv_ext/UKV_2023.zarr/
+```
+
+`rsync` synchronizes files by copying only the differences between source and destination. It can be slow because it needs to scan and compare all files first, then transfer the data. For large datasets like NWP files (~1TB), both the scanning and transfer phases take considerable time due to the volume of data involved.
 
 ## Contributing and community
-
-![ease of contribution: medium](https://img.shields.io/badge/ease%20of%20contribution:%20medium-f4900c)
-[![issues badge](https://img.shields.io/github/issues/openclimatefix/ocf-template?color=FFAC5F)](https://github.com/openclimatefix/ocf-template/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 
 - PR's are welcome! See the [Organisation Profile](https://github.com/openclimatefix) for details on contributing
 - Find out about our other projects in the [OCF Meta Repo](https://github.com/openclimatefix/ocf-meta-repo)
