@@ -1,7 +1,7 @@
 # Updating NWP + Sat + PV Data on GCS
 
 ![ease of contribution: medium](https://img.shields.io/badge/ease%20of%20contribution:%20medium-f4900c)
-[![issues badge](https://img.shields.io/github/issues/openclimatefix/ocf-template?color=FFAC5F)](https://github.com/openclimatefix/ocf-template/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
+[![issues badge](https://img.shields.io/github/issues/openclimatefix/forecast-data-prep?color=FFAC5F)](https://github.com/openclimatefix/forecast-data-prep/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
 
 Scripts to process and upload ML training data to Google Cloud Storage for use on VMs.
 
