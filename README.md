@@ -1,4 +1,7 @@
 # Updating NWP + Sat + PV Data on GCS
+<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+[![All Contributors](https://img.shields.io/badge/all_contributors-1-orange.svg?style=flat-square)](#contributors-)
+<!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![ease of contribution: medium](https://img.shields.io/badge/ease%20of%20contribution:%20medium-f4900c)
 [![issues badge](https://img.shields.io/github/issues/openclimatefix/forecast-data-prep?color=FFAC5F)](https://github.com/openclimatefix/forecast-data-prep/issues?q=is%3Aissue+is%3Aopen+sort%3Aupdated-desc)
@@ -77,3 +80,25 @@ gsutil -m rsync -r gs://solar-pv-nowcasting-data/NWP/UK_Met_Office/UKV_extended/
 *Part of the [Open Climate Fix](https://github.com/orgs/openclimatefix/people) community.*
 
 [![OCF Logo](https://cdn.prod.website-files.com/62d92550f6774db58d441cca/6324a2038936ecda71599a8b_OCF_Logo_black_trans.png)](https://openclimatefix.org)
+
+## Contributors ✨
+
+Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
+
+<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+<!-- prettier-ignore-start -->
+<!-- markdownlint-disable -->
+<table>
+  <tbody>
+    <tr>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/captainhaddock18"><img src="https://avatars.githubusercontent.com/u/120558797?v=4?s=100" width="100px;" alt="THARAK HEGDE "/><br /><sub><b>THARAK HEGDE </b></sub></a><br /><a href="https://github.com/openclimatefix/forecast-data-prep/commits?author=captainhaddock18" title="Documentation">📖</a></td>
+    </tr>
+  </tbody>
+</table>
+
+<!-- markdownlint-restore -->
+<!-- prettier-ignore-end -->
+
+<!-- ALL-CONTRIBUTORS-LIST:END -->
+
+This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
