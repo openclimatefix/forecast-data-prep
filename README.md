@@ -1,6 +1,9 @@
 # Updating NWP + Sat + PV Data on GCS
+
 <!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->
+
 [![All Contributors](https://img.shields.io/badge/all_contributors-2-orange.svg?style=flat-square)](#contributors-)
+
 <!-- ALL-CONTRIBUTORS-BADGE:END -->
 
 ![ease of contribution: medium](https://img.shields.io/badge/ease%20of%20contribution:%20medium-f4900c)
@@ -49,7 +52,7 @@ Once your data is in the GCS bucket, you can transfer it to a disk on your VM. F
 
 (You will need to know the disk name, which you can find with `lsblk`, and replace `ABC` with the actual disk name).
 
-If updating an existing disk please note that anyone who has the disk mounted will be required to unmount it in order to change the disks read/write access.
+If updating an existing disk please note that anyone who has the disk mounted will be required to unmount it in order to change the disks read/write access. If cloning an exising disk and adding to it, please see the notes below at "Cloning disks on GCP".
 
 To copy data from your GCS bucket to the mounted disk, use the following command:
 
@@ -62,11 +65,22 @@ The `*` is used to copy all files in that directory.
 ### Issues during upload
 
 If issues arise when uploading, use `rsync` instead to copy the files across if some have already been downloaded. For example:
+
 ```bash
 gsutil -m rsync -r gs://solar-pv-nowcasting-data/NWP/UK_Met_Office/UKV_extended/UKV_2023.zarr/ /mnt/disks/gcp_data/nwp/ukv/ukv_ext/UKV_2023.zarr/
 ```
 
 `rsync` synchronizes files by copying only the differences between source and destination. It can be slow because it needs to scan and compare all files first, then transfer the data. For large datasets like NWP files (~1TB), both the scanning and transfer phases take considerable time due to the volume of data involved.
+
+## Cloning disks on GCP
+
+After cloning (for GCP) mount the disk via the GCP UI. Then check the disk is not corrupted and the transfer was successful via `sudo e2fsck -f /dev/DISK_NAME` you can find the disk name via the `lsblk` command. When clonning a disk the UUID of the disk is the same. This can create issues when auto mounting disks on machine reboots. You can check a disks UUID by running `sudo blkid` in the terminal and check the UUIDs.
+
+To solve this, the UUID needs to be changed via `sudo tune2fs /dev/DISK_NAME -U random`. Once completed run another check on the disk `sudo e2fsck -fD /dev/sdc`. The `-f` option forces a check even if the filesystem seems clean. The `-D` option optimises directories in the filesystem.
+
+You can now check that the UUID has been updated by running `sudo blkid`.
+
+Now the `fstab` can be set to mount the cloned disk on reboot - follow the [Google Cloud instructions](https://cloud.google.com/compute/docs/disks/format-mount-disk-linux#configure_automatic_mounting_on_vm_restart) for help on this.
 
 ## Contributing and community
 
@@ -86,8 +100,11 @@ gsutil -m rsync -r gs://solar-pv-nowcasting-data/NWP/UK_Met_Office/UKV_extended/
 Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
 
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
+
 <!-- prettier-ignore-start -->
+
 <!-- markdownlint-disable -->
+
 <table>
   <tbody>
     <tr>
@@ -98,6 +115,7 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 </table>
 
 <!-- markdownlint-restore -->
+
 <!-- prettier-ignore-end -->
 
 <!-- ALL-CONTRIBUTORS-LIST:END -->
