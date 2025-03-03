@@ -3,7 +3,8 @@ Process and reformat satellite data from EUMETSAT SEVIRI RSS.
 
 This script downloads satellite data from Google Cloud Storage, processes it,
 and saves it in a more accessible format. It handles both HRV (High Resolution Visible)
-and non-HRV data.
+and non-HRV data. The file names from the bucket should be confirmed
+to ensure the correct data is being downloaded.
 
 The processed data is saved in zarr format.
 """
@@ -24,7 +25,7 @@ file_end = "nonhrv.zarr" if nonhrv else "hrv.zarr"
 
 input_root = "gs://public-datasets-eumetsat-solar-forecasting/satellite/EUMETSAT/SEVIRI_RSS/v4/" "{year}_" + file_end
 
-output_root = "/mnt/disks/gcp_data/sat/{year}_" + file_end
+output_root = "/mnt/disks/uk-all-inputs-v3/sat/v2/test/{year}_" + file_end
 
 lon_min, lon_max = -16, 10
 lat_min, lat_max = 45, 70
@@ -43,7 +44,7 @@ def rechunk(ds):
 if __name__ == "__main__":
     # client = Client()
 
-    for year in [2018]:
+    for year in [2019]:
         if os.path.exists(output_root.format(year=year)):
             continue
 
