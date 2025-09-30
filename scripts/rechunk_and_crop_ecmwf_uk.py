@@ -24,8 +24,6 @@ def rechunk_and_crop_ecmwf(input_dir, output_dir, year):
     # filter for a current year
     ds = ds.sel(init_time=str(year))
 
-    ds = ds.isel(variable=slice(None, 18))
-
     for var in ds.data_vars:
         ds[var].encoding.pop("chunks", None)
 
